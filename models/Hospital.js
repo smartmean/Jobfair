@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const HospitalSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -50,7 +51,6 @@ HospitalSchema.pre('deleteOne',{document:true, query: false}, async function(nex
     await this.model('Appointment').deleteMany({hospital: this._id});
     next();
 });
-
-
+  
 
 module.exports=mongoose.model('Hospital',HospitalSchema);
