@@ -14,10 +14,17 @@ const sentTokenResponse = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") {
     option.secure = true;
   }
-  res.status(statusCode).cookie("token", token, option).json({
-    success: true,
-    token,
-  });
+  res
+    .status(statusCode) /*.cookie("token", token, option)*/
+    .json({
+      success: true,
+      //add for frontend A9
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      //end for frontend A9
+      token,
+    });
 };
 
 //@desc Register user

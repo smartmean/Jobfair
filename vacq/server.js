@@ -2,6 +2,7 @@ const express = require("express");
 const dotenv = require("dotenv");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/db");
+const cors = require("cors");
 
 //Route files
 const hospitals = require("./routes/hospitals");
@@ -16,6 +17,9 @@ dotenv.config({ path: "./config/config.env" });
 
 //const app=express();
 const app = express();
+
+app.use(cors());
+
 //Body parser
 app.use(express.json());
 
