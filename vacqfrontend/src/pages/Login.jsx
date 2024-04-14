@@ -20,7 +20,8 @@ function Login(){
         if(isError){
             toast.error(message)
         }
-
+       
+        //rediect when logged in
         if(isSuccess || user){
             navigate('/')
         }
@@ -28,8 +29,6 @@ function Login(){
 
     },[isError, isSuccess, user, message, navigate, dispatch])
 
-
-////////////////////////////////
 
     const onChange = (e) =>{
         setFormData((prevState)=>({
