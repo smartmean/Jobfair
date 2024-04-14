@@ -101,7 +101,7 @@ exports.getHospital = async (req, res, next) => {
 //@access   Private
 exports.createHospital = async (req, res, next) => {
   const hospital = await Hospital.create(req.body);
-  res.status(200).json({
+  res.status(201).json({
     success: true,
     data: hospital,
   });
@@ -133,7 +133,11 @@ exports.deleteHospital = async (req, res, next) => {
   try {
     const hospital = await Hospital.findById(req.params.id);
 
-    if (!hospital) return res.status(400).json({ success: false });
+    if (!hospital) {
+      return res.status(400).json({ success: false });
+    }
+
+    await hospital.deleteOne();
 
     hospital.deleteOne();
     res.status(200).json({ success: true, data: hospital });
