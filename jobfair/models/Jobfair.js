@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const HospitalSchema = new mongoose.Schema(
+const JobfairSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -40,22 +40,22 @@ const HospitalSchema = new mongoose.Schema(
   }
 );
 //Reverse populate with virtuals
-HospitalSchema.virtual("appointments", {
+JobfairSchema.virtual("appointments", {
   ref: "Appointment",
   localField: "_id",
-  foreignField: "hospital",
+  foreignField: "jobfair",
   justOne: false,
 });
 
-//Cascade delete appointments when a hospital is deleted
-HospitalSchema.pre(
+//Cascade delete appointments when a jobfair is deleted
+JobfairSchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`Appointment being removed from hospital ${this._id}`);
-    await this.model("Appointment").deleteMany({ hospital: this._id });
+    console.log(`Appointment being removed from jobfair ${this._id}`);
+    await this.model("Appointment").deleteMany({ jobfair: this._id });
     next();
   }
 );
 
-module.exports = mongoose.model("Hospital", HospitalSchema);
+module.exports = mongoose.model("Jobfair", JobfairSchema);

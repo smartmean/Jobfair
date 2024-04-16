@@ -1,18 +1,18 @@
 const express = require("express");
 const {
-  getHospitals,
-  getHospital,
-  createHospital,
-  updateHospital,
-  deleteHospital,
+  getJobfairs,
+  getJobfair,
+  createJobfair,
+  updateJobfair,
+  deleteJobfair,
   getVacCenters,
-} = require("../controllers/hospitals");
+} = require("../controllers/jobfairs");
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Hospital:
+ *     Jobfair:
  *       type: object
  *       required:
  *         - name
@@ -21,14 +21,14 @@ const {
  *         id:
  *           type: string
  *           format: uuid
- *           description: The auto-generated id of the hospital
+ *           description: The auto-generated id of the jobfair
  *           example: d290f1ee-6c54-4b01-90e6-d701748f0851
  *         ลำดับ:
  *           type: string
  *           description: Ordinal number
  *         name:
  *           type: string
- *           description: Hospital name
+ *           description: Jobfair name
  *         address:
  *           type: string
  *           description: House No., Street, Road
@@ -50,7 +50,7 @@ const {
  *       example:
  *         id: 609bda561452242d88d36e37
  *         ลำดับ: 121
- *         name: Happy Hospital
+ *         name: Happy Jobfair
  *         address: 121 ถ.สุขุมวิท
  *         district: บางนา
  *         province: กรุงเทพมหานคร
@@ -62,124 +62,124 @@ const {
 /**
  * @swagger
  * tags:
- *   name: Hospitals
- *   description: The hospitals managing API
+ *   name: Jobfairs
+ *   description: The jobfairs managing API
  */
 
 /**
  * @swagger
- * /hospitals:
+ * /jobfairs:
  *   get:
- *     summary: Returns the list of all the hospitals
- *     tags: [Hospitals]
+ *     summary: Returns the list of all the jobfairs
+ *     tags: [Jobfairs]
  *     responses:
  *       200:
- *         description: The list of the hospitals
+ *         description: The list of the jobfairs
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Hospital'
+ *                 $ref: '#/components/schemas/Jobfair'
  */
 
 /**
  * @swagger
- * /hospitals/{id}:
+ * /jobfairs/{id}:
  *   get:
- *     summary: Get the hospital by id
- *     tags: [Hospitals]
+ *     summary: Get the jobfair by id
+ *     tags: [Jobfairs]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The hospital id
+ *         description: The jobfair id
  *     responses:
  *       200:
- *         description: The hospital description by id
+ *         description: The jobfair description by id
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Hospital'
+ *               $ref: '#/components/schemas/Jobfair'
  *       404:
- *         description: The hospital was not found
+ *         description: The jobfair was not found
  */
 
 /**
  * @swagger
- * /hospitals:
+ * /jobfairs:
  *   post:
- *     summary: Create a new hospital
- *     tags: [Hospitals]
+ *     summary: Create a new jobfair
+ *     tags: [Jobfairs]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Hospital'
+ *             $ref: '#/components/schemas/Jobfair'
  *     responses:
  *       201:
- *         description: The hospital was successfully created
+ *         description: The jobfair was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Hospital'
+ *               $ref: '#/components/schemas/Jobfair'
  *       500:
  *         description: Some server error
  */
 
 /**
  * @swagger
- * /hospitals/{id}:
+ * /jobfairs/{id}:
  *   put:
- *     summary: Update the hospital by id
- *     tags: [Hospitals]
+ *     summary: Update the jobfair by id
+ *     tags: [Jobfairs]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The hospital id
+ *         description: The jobfair id
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Hospital'
+ *             $ref: '#/components/schemas/Jobfair'
  *     responses:
  *       200:
- *         description: The hospital was updated
+ *         description: The jobfair was updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Hospital'
+ *               $ref: '#/components/schemas/Jobfair'
  *       404:
- *         description: The hospital was not found
+ *         description: The jobfair was not found
  *       500:
  *         description: Some error happened
  */
 
 /**
  * @swagger
- * /hospitals/{id}:
+ * /jobfairs/{id}:
  *   delete:
- *     summary: Remove the hospital by id
- *     tags: [Hospitals]
+ *     summary: Remove the jobfair by id
+ *     tags: [Jobfairs]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The hospital id
+ *         description: The jobfair id
  *     responses:
  *       200:
- *         description: The hospital was deleted
+ *         description: The jobfair was deleted
  *       404:
- *         description: The hospital was not found
+ *         description: The jobfair was not found
  */
 
 //Include other resource routers
@@ -188,16 +188,16 @@ const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 //Re-route into other resource routers
-router.use("/:hospitalId/appointments/", appointmentRouter);
+router.use("/:jobfairId/appointments/", appointmentRouter);
 router.route("/vacCenters").get(getVacCenters);
 router
   .route("/")
-  .get(getHospitals)
-  .post(protect, authorize("admin"), createHospital);
+  .get(getJobfairs)
+  .post(protect, authorize("admin"), createJobfair);
 router
   .route("/:id")
-  .get(getHospital)
-  .put(protect, authorize("admin"), updateHospital)
-  .delete(protect, authorize("admin"), deleteHospital);
+  .get(getJobfair)
+  .put(protect, authorize("admin"), updateJobfair)
+  .delete(protect, authorize("admin"), deleteJobfair);
 
 module.exports = router;

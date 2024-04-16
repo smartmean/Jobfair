@@ -20,6 +20,7 @@ const sentTokenResponse = (user, statusCode, res) => {
       success: true,
       //add for frontend A9
       _id: user._id,
+      phone: user.phone,
       name: user.name,
       email: user.email,
       //end for frontend A9
@@ -32,11 +33,12 @@ const sentTokenResponse = (user, statusCode, res) => {
 //@access Public
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, phone, email, password, role } = req.body;
 
     //create user to the database
     const user = await User.create({
       name,
+      phone,
       email,
       password,
       role,
