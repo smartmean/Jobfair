@@ -1,18 +1,18 @@
 const express = require("express");
 const {
-  getJobfairs,
-  getJobfair,
-  createJobfair,
-  updateJobfair,
-  deleteJobfair,
+  getCompanies,
+  getCompany,
+  createCompany,
+  updateCompany,
+  deleteCompany,
   getVacCenters,
-} = require("../controllers/jobfairs");
+} = require("../controllers/companies");
 
 /**
  * @swagger
  * components:
  *   schemas:
- *     Jobfair:
+ *     Company:
  *       type: object
  *       required:
  *         - name
@@ -21,14 +21,14 @@ const {
  *         id:
  *           type: string
  *           format: uuid
- *           description: The auto-generated id of the jobfair
+ *           description: The auto-generated id of the company
  *           example: d290f1ee-6c54-4b01-90e6-d701748f0851
  *         ลำดับ:
  *           type: string
  *           description: Ordinal number
  *         name:
  *           type: string
- *           description: Jobfair name
+ *           description: Company name
  *         address:
  *           type: string
  *           description: House No., Street, Road
@@ -50,7 +50,7 @@ const {
  *       example:
  *         id: 609bda561452242d88d36e37
  *         ลำดับ: 121
- *         name: Happy Jobfair
+ *         name: Happy Company
  *         address: 121 ถ.สุขุมวิท
  *         district: บางนา
  *         province: กรุงเทพมหานคร
@@ -62,124 +62,124 @@ const {
 /**
  * @swagger
  * tags:
- *   name: Jobfairs
- *   description: The jobfairs managing API
+ *   name: Companies
+ *   description: The companies managing API
  */
 
 /**
  * @swagger
- * /jobfairs:
+ * /companies:
  *   get:
- *     summary: Returns the list of all the jobfairs
- *     tags: [Jobfairs]
+ *     summary: Returns the list of all the companies
+ *     tags: [Companies]
  *     responses:
  *       200:
- *         description: The list of the jobfairs
+ *         description: The list of the companies
  *         content:
  *           application/json:
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/components/schemas/Jobfair'
+ *                 $ref: '#/components/schemas/Company'
  */
 
 /**
  * @swagger
- * /jobfairs/{id}:
+ * /companies/{id}:
  *   get:
- *     summary: Get the jobfair by id
- *     tags: [Jobfairs]
+ *     summary: Get the company by id
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The jobfair id
+ *         description: The company id
  *     responses:
  *       200:
- *         description: The jobfair description by id
+ *         description: The company description by id
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Jobfair'
+ *               $ref: '#/components/schemas/Company'
  *       404:
- *         description: The jobfair was not found
+ *         description: The company was not found
  */
 
 /**
  * @swagger
- * /jobfairs:
+ * /Companies:
  *   post:
- *     summary: Create a new jobfair
- *     tags: [Jobfairs]
+ *     summary: Create a new Company
+ *     tags: [Companies]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Jobfair'
+ *             $ref: '#/components/schemas/Company'
  *     responses:
  *       201:
- *         description: The jobfair was successfully created
+ *         description: The company was successfully created
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Jobfair'
+ *               $ref: '#/components/schemas/Company'
  *       500:
  *         description: Some server error
  */
 
 /**
  * @swagger
- * /jobfairs/{id}:
+ * /companies/{id}:
  *   put:
- *     summary: Update the jobfair by id
- *     tags: [Jobfairs]
+ *     summary: Update the company by id
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The jobfair id
+ *         description: The company id
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Jobfair'
+ *             $ref: '#/components/schemas/Company'
  *     responses:
  *       200:
- *         description: The jobfair was updated
+ *         description: The company was updated
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/Jobfair'
+ *               $ref: '#/components/schemas/Company'
  *       404:
- *         description: The jobfair was not found
+ *         description: The company was not found
  *       500:
  *         description: Some error happened
  */
 
 /**
  * @swagger
- * /jobfairs/{id}:
+ * /companies/{id}:
  *   delete:
- *     summary: Remove the jobfair by id
- *     tags: [Jobfairs]
+ *     summary: Remove the company by id
+ *     tags: [Companies]
  *     parameters:
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
  *         required: true
- *         description: The jobfair id
+ *         description: The company id
  *     responses:
  *       200:
- *         description: The jobfair was deleted
+ *         description: The company was deleted
  *       404:
- *         description: The jobfair was not found
+ *         description: The company was not found
  */
 
 //Include other resource routers
@@ -188,16 +188,16 @@ const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 //Re-route into other resource routers
-router.use("/:jobfairId/appointments/", appointmentRouter);
+router.use("/:companyId/appointments/", appointmentRouter);
 router.route("/vacCenters").get(getVacCenters);
 router
   .route("/")
-  .get(getJobfairs)
-  .post(protect, authorize("admin"), createJobfair);
+  .get(getCompanies)
+  .post(protect, authorize("admin"), createCompany);
 router
   .route("/:id")
-  .get(getJobfair)
-  .put(protect, authorize("admin"), updateJobfair)
-  .delete(protect, authorize("admin"), deleteJobfair);
+  .get(getCompany)
+  .put(protect, authorize("admin"), updateCompany)
+  .delete(protect, authorize("admin"), deleteCompany);
 
 module.exports = router;

@@ -12,7 +12,7 @@ const swaggerJsDoc = require("swagger-jsdoc");
 const swaggerUI = require("swagger-ui-express");
 
 //Route files
-const jobfairs = require("./routes/jobfairs");
+const companies = require("./routes/companies");
 const auth = require("./routes/auth");
 const appointments = require("./routes/appointments");
 
@@ -74,7 +74,7 @@ app.use(helmet());
 app.use(cookieParser());
 
 //Mount routers
-app.use("/api/v1/jobfairs", jobfairs);
+app.use("/api/v1/companies", companies);
 app.use("/api/v1/auth", auth);
 app.use("/api/v1/appointments", appointments);
 

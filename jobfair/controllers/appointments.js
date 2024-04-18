@@ -1,5 +1,5 @@
 const Appointment = require("../models/Appointment");
-const Jobfair = require("../models/Jobfair");
+const Company = require("../models/Company");
 
 //@desc     Get all appointments
 //@route    Get /api/v1/appointments
@@ -9,21 +9,21 @@ exports.getAppointments = async (req, res, next) => {
   //General user can see only thier appointments!
   if (req.user.role != "admin") {
     query = Appointment.find({ user: req.user.id }).populate({
-      path: "jobfair",
-      select: "name province tel",
+      path: "company",
+      select: "name address website description tel",
     });
   } else {
     //If you are an admin, you can see all!
-    if (req.params.jobfairId) {
-      console.log(req.params.jobfairId);
-      query = Appointment.find({ jobfair: req.params.jobfairId }).populate({
-        path: "jobfair",
-        select: "name province tel",
+    if (req.params.companyId) {
+      console.log(req.params.companyId);
+      query = Appointment.find({ company: req.params.companyId }).populate({
+        path: "company",
+        select: "name address website description tel",
       });
     } else
       query = Appointment.find().populate({
-        path: "jobfair",
-        select: "name province tel",
+        path: "company",
+        select: "name address website description tel",
       });
   }
   try {
@@ -50,7 +50,7 @@ exports.getAppointment = async (req, res, next) => {
   try {
     console.log(req.params.id);
     const appointment = await Appointment.findById(req.params.id).populate({
-      path: "jobfair",
+      path: "company",
       select: "name description tel",
     });
     console.log(appointment);
@@ -74,18 +74,31 @@ exports.getAppointment = async (req, res, next) => {
 };
 
 //@desc     Add appointments
-//@route    Get /api/v1/jobfairs/:jobfairId/appointment
+//@route    Get /api/v1/companies/:companyId/appointment
 //@access   Private
 exports.addAppointment = async (req, res, next) => {
   try {
-    req.body.jobfair = req.params.jobfairId;
+    req.body.company = req.params.companyId;
 
-    const jobfair = await Jobfair.findById(req.params.jobfairId);
-
-    if (!jobfair) {
+    const company = await Company.findById(req.params.companyId);
+    //console.log(req.body.company);
+    if (!company) {
       return res.status(404).json({
         success: false,
-        message: `No jobfair with the id of ${req.params.jobfairId}`,
+        message: `No company with the id of ${req.params.companyId}`,
+      });
+    }
+    //Check company date
+
+    const apptDate = new Date(req.body.apptDate).getTime();
+    const startDate = new Date("2022-05-10T00:00:00.000+00:00").getTime();
+    const endDate = new Date("2022-05-13T23:59:59.000+00:00").getTime();
+    console.log(req.body.apptDate);
+
+    if (!(apptDate >= startDate && apptDate <= endDate)) {
+      return res.status(400).json({
+        success: false,
+        message: "Appointment date must be during May 10th to May 13th, 2022",
       });
     }
     console.log(req.body);

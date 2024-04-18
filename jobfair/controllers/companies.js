@@ -1,10 +1,10 @@
-const Jobfair = require("../models/Jobfair");
+const Company = require("../models/Company");
 const VacCenter = require("../models/VacCenter");
 
-//@desc     Get all jobfairs
-//@routs    GET/api/v1/jobfairs
+//@desc     Get all companies
+//@routs    GET/api/v1/companies
 //@access   Public
-exports.getJobfairs = async (req, res, next) => {
+exports.getCompanies = async (req, res, next) => {
   let query;
 
   //Copy req.query
@@ -25,7 +25,7 @@ exports.getJobfairs = async (req, res, next) => {
   );
   console.log(queryStr);
 
-  query = Jobfair.find(JSON.parse(queryStr)).populate("appointments");
+  query = Company.find(JSON.parse(queryStr)).populate("appointments");
 
   //Select Fields
   if (req.query.select) {
@@ -48,10 +48,10 @@ exports.getJobfairs = async (req, res, next) => {
   const endIndex = page * limit;
 
   try {
-    const total = await Jobfair.countDocuments();
+    const total = await Company.countDocuments();
     query = query.skip(startIndex).limit(limit);
     //Execute query
-    const jobfairs = await query;
+    const companies = await query;
 
     //Pagination result
     const pagination = {};
@@ -71,83 +71,83 @@ exports.getJobfairs = async (req, res, next) => {
     }
     res.status(200).json({
       success: true,
-      count: jobfairs.length,
+      count: companies.length,
       pagination,
-      data: jobfairs,
+      data: companies,
     });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
-//@desc     Get one jobfairs
-//@routs    GET/api/v1/jobfairs/:id
+//@desc     Get one companies
+//@routs    GET/api/v1/companies/:id
 //@access   Public
-exports.getJobfair = async (req, res, next) => {
+exports.getCompany = async (req, res, next) => {
   try {
-    const jobfair = await Jobfair.findById(req.params.id);
+    const company = await Company.findById(req.params.id);
 
-    if (!jobfair) {
+    if (!company) {
       return res.status(400).json({ success: false });
     }
-    res.status(200).json({ success: true, data: jobfair });
+    res.status(200).json({ success: true, data: company });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
-//@desc     Create single jobfairs
-//@routs    POST/api/v1/jobfairs
+//@desc     Create single companies
+//@routs    POST/api/v1/companies
 //@access   Private
-exports.createJobfair = async (req, res, next) => {
-  const jobfair = await Jobfair.create(req.body);
+exports.createCompany = async (req, res, next) => {
+  const company = await Company.create(req.body);
   res.status(201).json({
     success: true,
-    data: jobfair,
+    data: company,
   });
 };
 
-//@desc     Update single jobfairs
-//@routs    PUT/api/v1/jobfairs/:id
+//@desc     Update single companies
+//@routs    PUT/api/v1/companies/:id
 //@access   Private
-exports.updateJobfair = async (req, res, next) => {
+exports.updateCompany = async (req, res, next) => {
   try {
-    const jobfair = await Jobfair.findByIdAndUpdate(req.params.id, req.body, {
+    const company = await Company.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
       runValidators: true,
     });
 
-    if (!jobfair) {
+    if (!company) {
       return res.status(400).json({ success: false });
     }
-    res.status(200).json({ success: true, data: jobfair });
+    res.status(200).json({ success: true, data: company });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
-//@desc     Delete single jobfairs
-//@routs    DELETE/api/v1/jobfairs
+//@desc     Delete single companies
+//@routs    DELETE/api/v1/companies
 //@access   Private
-exports.deleteJobfair = async (req, res, next) => {
+exports.deleteCompany = async (req, res, next) => {
   try {
-    const jobfair = await Jobfair.findById(req.params.id);
+    const company = await Company.findById(req.params.id);
 
-    if (!jobfair) {
+    if (!company) {
       return res.status(400).json({ success: false });
     }
 
-    await jobfair.deleteOne();
+    await company.deleteOne();
 
-    jobfair.deleteOne();
-    res.status(200).json({ success: true, data: jobfair });
+    company.deleteOne();
+    res.status(200).json({ success: true, data: company });
   } catch (err) {
     res.status(400).json({ success: false });
   }
 };
 
 //@desc     Get vaccine centers
-//@routs    GET/api/v1/jobfairs/vacCenters/
+//@routs    GET/api/v1/companies/vacCenters/
 //@access   Public
 
 exports.getVacCenters = (req, res, next) => {
