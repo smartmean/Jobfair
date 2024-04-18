@@ -88,7 +88,7 @@ exports.addAppointment = async (req, res, next) => {
         message: `No company with the id of ${req.params.companyId}`,
       });
     }
-    //Check company date
+    //Check Appointment date
 
     const apptDate = new Date(req.body.apptDate).getTime();
     const startDate = new Date("2022-05-10T00:00:00.000+00:00").getTime();
@@ -116,7 +116,7 @@ exports.addAppointment = async (req, res, next) => {
     }
 
     const appointment = await Appointment.create(req.body);
-    res.status(200).json({
+    res.status(201).json({
       success: true,
       data: appointment,
     });

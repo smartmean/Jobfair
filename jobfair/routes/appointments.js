@@ -9,7 +9,7 @@ const {
 
 const router = express.Router({ mergeParams: true });
 const { protect, authorize } = require("../middleware/auth");
-
+//router.use("/:apptsID/appointments/", appointmentRouter);
 router
   .route("/")
   .get(protect, getAppointments)
