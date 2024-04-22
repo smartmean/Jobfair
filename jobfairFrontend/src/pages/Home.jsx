@@ -5,7 +5,7 @@ function Home(){
     return(
         <>
         <section className='heading'>
-            <h1>Vac Q: A Vaccine Booking System</h1>
+            <h1>Jobfair: Online jobfair reservation System</h1>
             <p>Please choose from an option below</p>
 
         </section>
