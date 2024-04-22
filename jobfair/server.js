@@ -87,7 +87,7 @@ app.use("/api/v1/appointments", appointments);
 //res.status(200).json({success:true, data:{id:1}});
 //});
 console.log("port", process.env.PORT);
-const PORT = process.env.PORT || 5100;
+const PORT = process.env.PORT || 5200;
 const server = app.listen(
   PORT,
   console.log("Server running in ", process.env.NODE_ENV, "mode on port ", PORT)
