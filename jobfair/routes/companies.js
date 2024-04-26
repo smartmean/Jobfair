@@ -183,12 +183,12 @@ const {
  */
 
 //Include other resource routers
-const appointmentRouter = require("./appointments");
+const reservationRouter = require("./reservations");
 const router = express.Router();
 const { protect, authorize } = require("../middleware/auth");
 
 //Re-route into other resource routers
-router.use("/:companyId/appointments/", appointmentRouter);
+router.use("/:companyId/reservations/", reservationRouter);
 router.route("/vacCenters").get(getVacCenters);
 router
   .route("/")

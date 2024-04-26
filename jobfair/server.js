@@ -14,7 +14,7 @@ const swaggerUI = require("swagger-ui-express");
 //Route files
 const companies = require("./routes/companies");
 const auth = require("./routes/auth");
-const appointments = require("./routes/appointments");
+const reservations = require("./routes/reservations");
 
 //Connect to database
 connectDB();
@@ -76,7 +76,7 @@ app.use(cookieParser());
 //Mount routers
 app.use("/api/v1/companies", companies);
 app.use("/api/v1/auth", auth);
-app.use("/api/v1/appointments", appointments);
+app.use("/api/v1/reservations", reservations);
 
 //app.get('/', (req,res) => {
 //1. res.send('<h1>'Hello from express</h1>');

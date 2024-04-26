@@ -25,7 +25,7 @@ exports.getCompanies = async (req, res, next) => {
   );
   console.log(queryStr);
 
-  query = Company.find(JSON.parse(queryStr)).populate("appointments");
+  query = Company.find(JSON.parse(queryStr)).populate("reservations");
 
   //Select Fields
   if (req.query.select) {

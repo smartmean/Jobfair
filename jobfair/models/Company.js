@@ -32,20 +32,20 @@ const CompanySchema = new mongoose.Schema(
   }
 );
 //Reverse populate with virtuals
-CompanySchema.virtual("appointments", {
-  ref: "Appointment",
+CompanySchema.virtual("reservations", {
+  ref: "Reservation",
   localField: "_id",
   foreignField: "company",
   justOne: false,
 });
 
-//Cascade delete appointments when a company is deleted
+//Cascade delete reservations when a company is deleted
 CompanySchema.pre(
   "deleteOne",
   { document: true, query: false },
   async function (next) {
-    console.log(`Appointment being removed from company ${this._id}`);
-    await this.model("Appointment").deleteMany({ company: this._id });
+    console.log(`Reservation being removed from company ${this._id}`);
+    await this.model("Reservation").deleteMany({ company: this._id });
     next();
   }
 );
